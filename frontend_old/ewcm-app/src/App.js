@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 //import Button from './components/Button';
 import InputField from './components/InputField';
 import { fetchParticipants } from './http';
-import { Button, Container, Typography } from '@mui/material';
+import { Button, Container, Typography, Tabs, Tab } from '@mui/material';
 
 function App() {
 
@@ -20,111 +20,119 @@ function App() {
       setParticipants(response.data);
   };
 
+ 
+  const [activeTab, setActiveTab] = useState('participants');
 
-
-    // Alternative approach with tabs
-const [activeTab, setActiveTab] = useState('participants');
-
-const renderTabContent = () => {
-  switch (activeTab) {
-    case 'participants':
-      return (
-        <div>
-          <h2>Participants</h2>
-          <ul>
-            {participants.map(participant => (
-              <li key={participant.id}>{participant.name}</li>
-            ))}
-          </ul>
-        </div>
-      );
-    case 'matches':
-      return <div><h2>Matches</h2></div>;
-    default:
-      return null;
-  }
-};
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'participants':
+        return (
+          <div>
+            <Typography variant="h2" gutterBottom>
+              Participants
+            </Typography>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+              {participants.map(participant => (
+                <Typography 
+                  key={participant.id} 
+                  component="li" 
+                  variant="body1"
+                  sx={{ mb: 1 }}
+                >
+                  {participant.name}
+                </Typography>
+              ))}
+            </ul>
+          </div>
+        );
+      case 'tournament':
+        return (
+          <div>
+            <Typography variant="h2" gutterBottom>
+              Tournament
+            </Typography>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1 className="mb-4">eWorldCup Manager</h1>
+    <Container maxWidth="lg">
+      <div className="App">
+        <header className="App-header">
+          <Typography variant="h1" gutterBottom>eWorldCup Manager</Typography>
 
-        <ul className="nav justify-content-center nav-tabs mb-4">
-          <li className="nav-item">
-            <button 
-              className={`nav-link ${activeTab === 'participants' ? 'active' : ''}`}
-              onClick={() => setActiveTab('participants')}
-            >
-              Participants
-            </button>
-          </li>
-          <li className="nav-item">
-            <button 
-              className={`nav-link ${activeTab === 'tournament' ? 'active' : ''}`}
-              onClick={() => setActiveTab('tournament')}
-            >
-              Tournament
-            </button>
-          </li>
-        </ul>
+          <Tabs 
+            value={activeTab} 
+            onChange={(event, newValue) => setActiveTab(newValue)}
+            centered
+            sx={{ mb: 4 }}
+          >
+            <Tab label="Participants" value="participants" />
+            <Tab label="Tournament" value="tournament" />
+          </Tabs>
 
-        {renderTabContent()}
+          {renderTabContent()}
 
-        {activeTab === 'participants' && (
-          <div>
-            <div className="mb-4">
-              <Button 
-                text="Get all participants"
-                className="me-0 align-self-center"
-                onClick={handleFetchParticipants} 
-              />
+          {activeTab === 'participants' && (
+            <div>
+              <div className="mb-4">
+                <Button 
+                  variant="contained"
+                  onClick={handleFetchParticipants} 
+                  sx={{ mb: 2 }}
+                >
+                  Get all participants
+                </Button>
+              </div>
+
+              <div className="d-flex gap-2" style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+                <InputField 
+                  placeholder="Enter participant ID" 
+                  id="participantId" 
+                  onChange={(e) => setParticipantId(e.target.value)} 
+                  value={participantId} 
+                  onKeyUp={(e) => {
+                    if (e.key === 'Enter') {
+                      alert(`Fetching participant with ID: ${participantId}`);
+                    }
+                  }} 
+                />
+                <Button 
+                  variant="outlined"
+                  onClick={() => alert(`Fetching participant with ID: ${participantId}`)} 
+                >
+                  Get participant by ID
+                </Button>
+              </div>
+
+              <div style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
+                <InputField 
+                  placeholder="Enter participant ID to delete" 
+                  id="deleteParticipantId" 
+                  onChange={(e) => setParticipantId(e.target.value)} 
+                  value={participantId} 
+                  onKeyUp={(e) => {
+                    if (e.key === 'Enter') {
+                      alert(`Deleting participant with ID: ${participantId}`);
+                    }
+                  }} 
+                />
+                <Button 
+                  variant="outlined"
+                  color="error"
+                  onClick={() => alert(`Deleting participant with ID: ${participantId}`)} 
+                >
+                  Delete participant
+                </Button>
+              </div>
             </div>
-
-            <div className="d-flex gap-2">
-              <InputField 
-                placeholder="Enter participant ID" 
-                id="participantId" 
-                onChange={(e) => setParticipantId(e.target.value)} 
-                value={participantId} 
-                onKeyUp={(e) => {
-                  if (e.key === 'Enter') {
-                    alert(`Fetching participant with ID: ${participantId}`);
-                  }
-                }} 
-              />
-              <Button 
-                text="Get participant by ID"
-                className="me-0 align-self-center"
-                onClick={() => alert(`Fetching participant with ID: ${participantId}`)} 
-              />
-            </div>
-
-            <div className="d-flex gap-2 mt-4">
-
-              {/* TODO: Lägg till Form runomkting och kanske TextField i stället för InputField? */}
-
-              <InputField 
-                placeholder="Enter participant ID to delete" 
-                id="deleteParticipantId" 
-                onChange={(e) => setParticipantId(e.target.value)} 
-                value={participantId} 
-                onKeyUp={(e) => {
-                  if (e.key === 'Enter') {
-                    alert(`Deleting participant with ID: ${participantId}`);
-                  }
-                }} 
-              />
-              <Button 
-                text="Delete participant"
-                className="me-0 align-self-center"
-                onClick={() => alert(`Deleting participant with ID: ${participantId}`)} 
-              />
-            </div>
-          </div>
-        )}
-      </header>
-    </div>
+          )}
+        </header>
+      </div>
+    </Container>
   );
 }
 

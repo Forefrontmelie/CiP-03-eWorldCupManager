@@ -36,19 +36,19 @@ public class TournamentController {
 		return tournamentService.getMaxNumberOfRounds(n);   //TODO: Inte skicka in n, utan returnera baserat på antal deltagare i turneringen?
 	}
 
-	public int getRemainingUniquePairsAfterRounds(int n, int roundNbr) {
+	public int getRemainingUniquePairs(int n, int roundNbr) {
 		return tournamentService.getRemainingUniquePairsAfterRounds(n, roundNbr);
 	}
 
 
-	public void getRoundOpponent(int n, int index, int roundNbr) {
+	public int getRoundOpponent(int n, int index, int roundNbr) {
 		int opponentIndex = tournamentService.getOpponentIndex(index, roundNbr);
 		Participant participant = tournamentService.getParticipant(index);
 		Participant opponent = tournamentService.getParticipant(opponentIndex);
 
 		System.out.print("Opponent for participant " + index + "." + participant.getName() + ", in round " + roundNbr + " with " + n + " participants: " + opponentIndex + "." + opponent.getName() + ".");
 
-
+		return opponentIndex;
 	}
 
 	public void printThisRound(ArrayList<Participant> participants, int roundNbr) {

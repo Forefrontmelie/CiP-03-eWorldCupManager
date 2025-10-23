@@ -26,9 +26,11 @@ public class TournamentController {
 	}
 
 
-	public void getPairsForSpecificRound(int roundNbr) {
+	public ArrayList<Participant> getPairsForSpecificRound(int roundNbr) {
 		ArrayList<Participant> rotated = tournamentService.getPairsForRound(roundNbr);
 		printThisRound(rotated, roundNbr);
+
+		return rotated;
 	}
 
 

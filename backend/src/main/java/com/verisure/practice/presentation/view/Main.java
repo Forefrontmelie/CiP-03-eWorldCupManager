@@ -41,10 +41,10 @@ public class Main {
 		System.out.println();
 
 		System.out.print("Remaining unique pairs after 18 rounds with 20 participants: ");
-		System.out.println(tc.getRemainingUniquePairsAfterRounds(20, 18));
+		System.out.println(tc.getRemainingUniquePairs(20, 18));
 		System.out.println();
 
-		tc.getRoundOpponent(10, 4, 3);
+		//tc.getOpponentParticipant(10, 4, 3);
 
 
 	}

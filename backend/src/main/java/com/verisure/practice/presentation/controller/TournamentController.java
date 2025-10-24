@@ -5,24 +5,34 @@ import java.util.ArrayList;
 import com.verisure.practice.application.participant.ParticipantService;
 import com.verisure.practice.application.tournament.TournamentService;
 import com.verisure.practice.domain.participant.Participant;
-import com.verisure.practice.infrastructure.factory.HumanParticipantFactory;
-import com.verisure.practice.infrastructure.strategy.RotationPairingStrategy;
 
 public class TournamentController {
 
+	private ParticipantController participantController;
 	private ParticipantService participantService;
 	private TournamentService tournamentService;
 
+
+	public TournamentController(){
+		this.participantService = new ParticipantService();
+		this.participantController = new ParticipantController();
+		this.tournamentService = new TournamentService(participantController.getParticipantService());
+	}
+
+	public TournamentController(ParticipantController participantController){
+		this.participantController = participantController;
+		this.tournamentService = new TournamentService(participantController.getParticipantService());
+	}
 
 	public TournamentController(ArrayList<String> strParticipants) {
 		if (strParticipants.size() % 2 != 0) {
 			throw new IllegalArgumentException("The number of participants must be even.");
 		}
 
-		this.participantService = new ParticipantService(new HumanParticipantFactory());
-		participantService.createParticipantsFromList(strParticipants);
+		participantController.createParticipantsFromList(strParticipants);
 
-		this.tournamentService = new TournamentService(participantService.getParticipants(), new RotationPairingStrategy());
+		this.tournamentService = new TournamentService(participantController.getParticipantService());
+		//this.tournamentService = new TournamentService(participantService.getParticipants(), new RotationPairingStrategy());
 	}
 
 
@@ -38,19 +48,22 @@ public class TournamentController {
 		return tournamentService.getMaxNumberOfRounds(n);   //TODO: Inte skicka in n, utan returnera baserat på antal deltagare i turneringen?
 	}
 
-	public int getRemainingUniquePairsAfterRounds(int n, int roundNbr) {
+	public int getRemainingUniquePairs(int n, int roundNbr) {
 		return tournamentService.getRemainingUniquePairsAfterRounds(n, roundNbr);
 	}
 
 
-	public void getRoundOpponent(int n, int index, int roundNbr) {
+	public int getOpponentIndex(int index, int roundNbr) {
 		int opponentIndex = tournamentService.getOpponentIndex(index, roundNbr);
-		Participant participant = tournamentService.getParticipant(index);
+
+		return opponentIndex;
+	}
+
+	public Participant getOpponentParticipant(int index, int roundNbr) {
+		int opponentIndex = tournamentService.getOpponentIndex(index, roundNbr);
 		Participant opponent = tournamentService.getParticipant(opponentIndex);
 
-		System.out.print("Opponent for participant " + index + "." + participant.getName() + ", in round " + roundNbr + " with " + n + " participants: " + opponentIndex + "." + opponent.getName() + ".");
-
-
+		return opponent;
 	}
 
 	public void printThisRound(ArrayList<Participant> participants, int roundNbr) {

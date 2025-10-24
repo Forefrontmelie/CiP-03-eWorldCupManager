@@ -6,7 +6,12 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import com.verisure.practice.domain.participant.Participant;
+import com.verisure.practice.presentation.controller.ParticipantController;
 import com.verisure.practice.presentation.controller.TournamentController;
+
+
+
+ // ------------------------------------ TODO: SE ÖVER SÅ SKICKAR JSON!! ------------------------------------
 
 
 @RestController
@@ -15,10 +20,13 @@ public class TournamentRestAPI {
 
 	private float version = 1.0f;
 	private TournamentController tournamentController;
+	private ParticipantController participantController;
 
 
-	public TournamentRestAPI (TournamentController tournamentController) {
-		this.tournamentController = tournamentController;
+	public TournamentRestAPI () {
+		this.participantController = new ParticipantController();
+		this.tournamentController = new TournamentController(participantController);
+
 	}
 
 
@@ -46,8 +54,8 @@ public class TournamentRestAPI {
 
 	//GET		/match?n=&i=&d=			Returnerar direkt vem spelare i möter i runda d (0-baserat index).
 	@GetMapping("/match")
-	public int getOpponentInRound(@RequestParam int n, @RequestParam int i, @RequestParam int d) {
-		return tournamentController.getRoundOpponent(n, i, d);   //TODO: Returnerar index. Participant i stället?
+	public int getOpponentIndex(@RequestParam int i, @RequestParam int d) {
+		return tournamentController.getOpponentIndex(i, d);
 	}
 
 	//GET		/player/:i/schedule		Returnerar hela schemat för spelare i över rundor 1..n−1.
@@ -59,19 +67,26 @@ public class TournamentRestAPI {
 	//GET		/player/:i/round/:d		Alias till “direktfråga” för spelare i i runda d, men med namn/objekt.
 	@GetMapping("/player/{i}/round/{d}")
 	public Participant getPlayerOpponentInRound(@PathVariable int i, @PathVariable int d) {
-		return tournamentService.getPlayerOpponentInRound(i, d);
+		return tournamentController.getOpponentParticipant(i, d);
+	}
+
+
+	//GET		/rounds/:d				Returnerar alla participants.
+	@GetMapping("/rounds/{d}")
+	public ArrayList<Participant> getAllParticipants() {
+		return participantController.getParticipants();
 	}
 
 	//POST	/player	(Bonus) 		Lägg till en ny deltagare i listan.
 	@PostMapping("/player")
-	public Participant addPlayer(@RequestBody Participant participant) {
-		return tournamentService.addPlayer(participant);
+	public void addPlayer(@RequestBody String name) {
+		participantController.createParticipant(name);   // TODO: Ha en retur?
 	}
 
 	//DELETE	/player/:id	(Bonus) 	Ta bort en deltagare ur listan baserat på ID.
 	@DeleteMapping("/player/{id}")
-	public void removePlayer(@PathVariable Long id) {
-		tournamentService.removePlayer(id);
+	public void removePlayer(@PathVariable int id) {
+		participantController.removeParticipant(id); // TODO: Ha en retur?
 	}
 
 

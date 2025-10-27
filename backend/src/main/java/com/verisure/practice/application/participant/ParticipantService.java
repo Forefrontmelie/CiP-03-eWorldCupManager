@@ -26,7 +26,7 @@ public class ParticipantService {
 	}
 
 
-	public Participant createParticipant(String name) {
+	public Participant createParticipant(String name) {    // TODO: Lägg också till i databasen!
 		Participant participant = factory.createParticipant(name, nextId);
 		participants.add(participant);
 		nextId++;
@@ -42,6 +42,10 @@ public class ParticipantService {
 		for (String name : names) {
 			Participant p = createParticipant(name);
 		}
+	}
+
+	public void removeParticipant(int index) {     // TODO: Ta också bort från databasen!
+		participants.remove(index);
 	}
 
 

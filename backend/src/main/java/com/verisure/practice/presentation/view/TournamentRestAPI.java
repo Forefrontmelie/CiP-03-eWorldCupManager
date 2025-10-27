@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.verisure.practice.domain.participant.Participant;
 import com.verisure.practice.presentation.controller.ParticipantController;
 import com.verisure.practice.presentation.controller.TournamentController;
+import com.verisure.practice.presentation.dto.PlayerScheduleDTO;
 import com.verisure.practice.presentation.dto.RoundDTO;
 import com.verisure.practice.domain.Match;
 import com.verisure.practice.domain.MatchPair;
@@ -61,7 +62,7 @@ public class TournamentRestAPI {
 
 	//GET		/player/:i/schedule		Returnerar hela schemat för spelare i över rundor 1..n−1.
 	@GetMapping("/player/{i}/schedule")
-	public List<MatchPair> getPlayerSchedule(@PathVariable int i) {
+	public PlayerScheduleDTO getPlayerSchedule(@PathVariable int i) {
 		return tournamentController.getPlayerSchedule(i);
 	}
 

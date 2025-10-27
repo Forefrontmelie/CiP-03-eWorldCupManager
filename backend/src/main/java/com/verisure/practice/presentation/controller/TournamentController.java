@@ -1,10 +1,12 @@
 package com.verisure.practice.presentation.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.verisure.practice.application.participant.ParticipantService;
 import com.verisure.practice.application.tournament.TournamentService;
 import com.verisure.practice.domain.participant.Participant;
+import com.verisure.practice.domain.Match;
 
 public class TournamentController {
 
@@ -66,6 +68,11 @@ public class TournamentController {
 		return opponent;
 	}
 
+	public List<Match> getPlayerSchedule(int playerIndex) {
+        return tournamentService.getPlayerSchedule(playerIndex);
+    }
+
+	
 	public void printThisRound(ArrayList<Participant> participants, int roundNbr) {
 		System.out.println("The pairs for round " + roundNbr + ":");
 		for (int i = 0; i < participants.size() / 2; i++) {

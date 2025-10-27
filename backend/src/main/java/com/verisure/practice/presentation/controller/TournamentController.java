@@ -6,7 +6,9 @@ import java.util.List;
 import com.verisure.practice.application.participant.ParticipantService;
 import com.verisure.practice.application.tournament.TournamentService;
 import com.verisure.practice.domain.participant.Participant;
-import com.verisure.practice.domain.Match;
+import com.verisure.practice.presentation.dto.PlayerScheduleDTO;
+import com.verisure.practice.presentation.dto.RoundDTO;
+import com.verisure.practice.domain.MatchPair;
 
 public class TournamentController {
 
@@ -38,12 +40,14 @@ public class TournamentController {
 	}
 
 
+	/*
 	public ArrayList<Participant> getPairsForSpecificRound(int roundNbr) {
 		ArrayList<Participant> rotated = tournamentService.getPairsForRound(roundNbr);
 		printThisRound(rotated, roundNbr);
 
 		return rotated;
 	}
+		*/
 
 
 	public int getMaxNumberOfRounds(int n) {
@@ -68,10 +72,6 @@ public class TournamentController {
 		return opponent;
 	}
 
-	public List<Match> getPlayerSchedule(int playerIndex) {
-        return tournamentService.getPlayerSchedule(playerIndex);
-    }
-
 	
 	public void printThisRound(ArrayList<Participant> participants, int roundNbr) {
 		System.out.println("The pairs for round " + roundNbr + ":");
@@ -83,6 +83,16 @@ public class TournamentController {
 	public void printMessage(String message) {
 		System.out.println(message);
 	}
+
+
+	public RoundDTO getPairsForSpecificRound(int round) {
+    	return tournamentService.getPairsForSpecificRound(round);
+	}
+
+
+	public PlayerScheduleDTO getPlayerSchedule(int playerIndex) {
+        return tournamentService.getPlayerSchedule(playerIndex);
+    }
 
 
 }

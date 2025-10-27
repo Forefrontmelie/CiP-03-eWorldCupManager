@@ -1,15 +1,19 @@
 package com.verisure.practice.application.tournament;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.verisure.practice.application.participant.ParticipantService;
 import com.verisure.practice.application.tournament.strategy.PairingStrategy;
 import com.verisure.practice.domain.participant.Participant;
 import com.verisure.practice.infrastructure.strategy.RotationPairingStrategy;
+import com.verisure.practice.presentation.dto.PlayerScheduleDTO;
+import com.verisure.practice.presentation.dto.RoundDTO;
+import com.verisure.practice.domain.MatchPair;
 
 public class TournamentService {
 
-	private ParticipantService  participantService;
+	private ParticipantService  participantService;   // TODO: GÅ VIA ParticipantController FÖR ATT KOMMA TILL ParticipantService!
 	private PairingStrategy pairingStrategy;
 
 	public TournamentService(ParticipantService participantService) {
@@ -56,4 +60,40 @@ public class TournamentService {
 	public Participant getParticipant(int index) {
 		return participantService.getParticipants().get(index);
 	}
+
+
+	public RoundDTO getPairsForSpecificRound(int round) {
+    ArrayList<Participant> rotatedParticipants = getPairsForRound(round);
+    List<MatchPair> pairs = new ArrayList<>();
+    
+    for (int i = 0; i < rotatedParticipants.size() / 2; i++) {
+        Participant player1 = rotatedParticipants.get(i);
+        Participant player2 = rotatedParticipants.get(rotatedParticipants.size() - 1 - i);
+        MatchPair pair = new MatchPair(round, player1, player2);
+        pairs.add(pair);
+    }
+    
+		return new RoundDTO(round, pairs);
+	}
+
+
+
+	public PlayerScheduleDTO getPlayerSchedule(int playerIndex) {
+		List<Participant> participants = participantService.getParticipants();
+		String playerName = participants.get(playerIndex).getName();
+		int totalRounds = participants.size();
+		List<MatchPair> schedule = new ArrayList<>();
+			
+		for (int round = 1; round <= totalRounds; round++) {
+			int opponentIndex = getOpponentIndex(playerIndex, round);
+			Participant player = participants.get(playerIndex);
+			Participant opponent = participants.get(opponentIndex);
+				
+			schedule.add(new MatchPair(round, player, opponent));
+		}
+
+		return new PlayerScheduleDTO(playerName, totalRounds, schedule);
+	}
+
+
 }

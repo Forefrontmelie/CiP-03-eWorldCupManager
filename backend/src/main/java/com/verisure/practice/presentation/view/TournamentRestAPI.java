@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import com.verisure.practice.domain.participant.Participant;
 import com.verisure.practice.presentation.controller.ParticipantController;
 import com.verisure.practice.presentation.controller.TournamentController;
+import com.verisure.practice.presentation.dto.RoundDTO;
 import com.verisure.practice.domain.Match;
+import com.verisure.practice.domain.MatchPair;
 
 
 
@@ -31,22 +33,20 @@ public class TournamentRestAPI {
 	}
 
 
-	// TODO: KLAR!
+	// TODO: ------- GÖR OM! ------------------
 	//GET		/rounds/:d				Returnerar alla matcher i runda d (1 ≤ d ≤ n−1).
 	@GetMapping("/rounds/{d}")
-	public ArrayList<Participant> getMatchesInRound(@PathVariable int d) {
+	public RoundDTO getMatchesInRound(@PathVariable int d) {
 		return tournamentController.getPairsForSpecificRound(d);
 	}
 
-
-	// TODO: KLAR!
+	
 	//GET		/rounds/max?n=			Returnerar max antal rundor för n deltagare (n−1).
 	@GetMapping("/rounds/max")
 	public int getMaxRounds(@RequestParam int n) {
 		return tournamentController.getMaxNumberOfRounds(n);
 	}
 
-	// TODO: KLAR!
 	//GET		/match/remaining?n=&D=	Returnerar antal återstående unika par efter att D rundor har spelats.
 	@GetMapping("/match/remaining")
 	public int getRemainingUniquePairs(@RequestParam int n, @RequestParam int D) {
@@ -61,7 +61,7 @@ public class TournamentRestAPI {
 
 	//GET		/player/:i/schedule		Returnerar hela schemat för spelare i över rundor 1..n−1.
 	@GetMapping("/player/{i}/schedule")
-	public List<Match> getPlayerSchedule(@PathVariable int i) {
+	public List<MatchPair> getPlayerSchedule(@PathVariable int i) {
 		return tournamentController.getPlayerSchedule(i);
 	}
 
@@ -72,8 +72,8 @@ public class TournamentRestAPI {
 	}
 
 
-	//GET		/rounds/:d				Returnerar alla participants.
-	@GetMapping("/rounds/{d}")
+	//GET		/participants/				Returnerar alla participants.
+	@GetMapping("/participants/")
 	public ArrayList<Participant> getAllParticipants() {
 		return participantController.getParticipants();
 	}
@@ -81,13 +81,13 @@ public class TournamentRestAPI {
 	//POST	/player	(Bonus) 		Lägg till en ny deltagare i listan.
 	@PostMapping("/player")
 	public void addPlayer(@RequestBody String name) {
-		participantController.createParticipant(name);   // TODO: Ha en retur?
+		participantController.createParticipant(name);  
 	}
 
 	//DELETE	/player/:id	(Bonus) 	Ta bort en deltagare ur listan baserat på ID.
 	@DeleteMapping("/player/{id}")
 	public void removePlayer(@PathVariable int id) {
-		participantController.removeParticipant(id); // TODO: Ha en retur?
+		participantController.removeParticipant(id); 
 	}
 
 

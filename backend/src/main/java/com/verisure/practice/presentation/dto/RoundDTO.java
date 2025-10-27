@@ -1,7 +1,6 @@
 package com.verisure.practice.presentation.dto;
 
 import java.util.List;
-import java.util.Map;
 
 import com.verisure.practice.domain.MatchPair;
 

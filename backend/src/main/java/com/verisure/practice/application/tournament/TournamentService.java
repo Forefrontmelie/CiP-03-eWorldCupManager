@@ -3,6 +3,8 @@ package com.verisure.practice.application.tournament;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.verisure.practice.application.participant.ParticipantService;
 import com.verisure.practice.application.tournament.strategy.PairingStrategy;
 import com.verisure.practice.domain.participant.Participant;
@@ -11,10 +13,11 @@ import com.verisure.practice.presentation.dto.PlayerScheduleDTO;
 import com.verisure.practice.presentation.dto.RoundDTO;
 import com.verisure.practice.domain.MatchPair;
 
+@Service
 public class TournamentService {
 
-	private ParticipantService  participantService;   // TODO: GÅ VIA ParticipantController FÖR ATT KOMMA TILL ParticipantService!
-	private PairingStrategy pairingStrategy;
+	private final ParticipantService participantService;
+	private final PairingStrategy pairingStrategy;
 
 	public TournamentService(ParticipantService participantService) {
 		this.participantService = participantService;
@@ -63,16 +66,13 @@ public class TournamentService {
 
 
 	public RoundDTO getPairsForSpecificRound(int round) {
-    ArrayList<Participant> rotatedParticipants = getPairsForRound(round);
-    List<MatchPair> pairs = new ArrayList<>();
-    
-    for (int i = 0; i < rotatedParticipants.size() / 2; i++) {
-        Participant player1 = rotatedParticipants.get(i);
-        Participant player2 = rotatedParticipants.get(rotatedParticipants.size() - 1 - i);
-        MatchPair pair = new MatchPair(round, player1, player2);
-        pairs.add(pair);
-    }
-    
+		ArrayList<Participant> rotatedParticipants = getPairsForRound(round);
+		List<MatchPair> pairs = new ArrayList<>();
+		for (int i = 0; i < rotatedParticipants.size() / 2; i++) {
+			Participant player1 = rotatedParticipants.get(i);
+			Participant player2 = rotatedParticipants.get(rotatedParticipants.size() - 1 - i);
+			pairs.add(new MatchPair(round, player1, player2));
+		}
 		return new RoundDTO(round, pairs);
 	}
 

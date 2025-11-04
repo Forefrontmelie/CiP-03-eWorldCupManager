@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: eworldcup-backend
+  
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://admin:password123@localhost:27017/eworldcup?authSource=admin}
+      database: ${SPRING_DATA_MONGODB_DATABASE:eworldcup}
+  
+  web:
+    cors:
+      allowed-origins: 
+        - http://localhost:3000
+        - http://frontend
+      allowed-methods: 
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+        - OPTIONS
+      allowed-headers: "*"
+      allow-credentials: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.verisure.practice: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/eworldcup-backend.log

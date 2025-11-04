@@ -1,19 +1,20 @@
 package com.verisure.practice.presentation.controller;
 
 import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.verisure.practice.application.participant.ParticipantService;
 import com.verisure.practice.domain.participant.Participant;
-import com.verisure.practice.infrastructure.factory.HumanParticipantFactory;
 
+@Component
 public class ParticipantController {
 
+	private final ParticipantService participantService;
 
-	private ParticipantService participantService;
-
-
-	public ParticipantController() {
-		this.participantService = new ParticipantService(new HumanParticipantFactory());   // TODO: Gör mer dynmaiskt - ta in olika sorters ParticipantFactory
+	@Autowired
+	public ParticipantController(ParticipantService participantService) {
+		this.participantService = participantService;
 	}
 
 	public void createParticipant(String name) {
@@ -32,13 +33,7 @@ public class ParticipantController {
 		return participantService;
 	}
 
-	public void setParticipantService(ParticipantService participantService) {
-		this.participantService = participantService;
-	}
-
 	public void removeParticipant(int index) {
 		participantService.removeParticipant(index);
 	}
-
-
 }

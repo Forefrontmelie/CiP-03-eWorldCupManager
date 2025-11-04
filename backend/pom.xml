@@ -16,8 +16,8 @@
     <name>ipsum</name>
     <url>dolor</url>
   </organization>
-  <artifactId>CiP-02-eWorldTour</artifactId>
-  <description>CiP project</description>
+  <artifactId>CiP-03-eWorldCupManager</artifactId>
+  <description>eWorldCup Manager - Tournament management system</description>
   <version>1.0-SNAPSHOT</version>
 
   <properties>

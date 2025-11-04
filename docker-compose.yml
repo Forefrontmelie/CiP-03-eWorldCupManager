@@ -1,11 +1,7 @@
-version: '3.8'
-
 services:
-  # MongoDB Database
   mongodb:
     image: mongo:7.0
     container_name: eworldcup-mongodb
-    restart: unless-stopped
     ports:
       - "27017:27017"
     environment:
@@ -15,56 +11,24 @@ services:
     volumes:
       - mongodb_data:/data/db
       - ./mongo-init:/docker-entrypoint-initdb.d
-    networks:
-      - eworldcup-network
 
-  # Backend API
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    build: ./backend
     container_name: eworldcup-backend
-    restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "8080:8080"
     environment:
-      - NODE_ENV=development
-      - PORT=3001
-      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/eworldcup?authSource=admin
+      SPRING_DATA_MONGODB_URI: mongodb://admin:password123@mongodb:27017/eworldcup?authSource=admin
+      SPRING_DATA_MONGODB_DATABASE: eworldcup
+
     depends_on:
       - mongodb
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-      - ./shared:/app/shared
-    networks:
-      - eworldcup-network
 
-  # Frontend
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    build: ./frontend
     container_name: eworldcup-frontend
-    restart: unless-stopped
     ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - REACT_APP_API_URL=http://localhost:3001
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-      - ./shared:/app/shared
-    networks:
-      - eworldcup-network
+      - "3000:80"
 
 volumes:
   mongodb_data:
-
-networks:
-  eworldcup-network:
-    driver: bridge

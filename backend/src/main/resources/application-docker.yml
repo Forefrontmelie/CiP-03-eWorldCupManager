@@ -1,0 +1,18 @@
+spring:
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://admin:password123@mongodb:27017/eworldcup?authSource=admin}
+      database: ${SPRING_DATA_MONGODB_DATABASE:eworldcup}
+  
+  web:
+    cors:
+      allowed-origins: 
+        - http://localhost:3000
+        - http://frontend
+        - http://localhost:80
+
+logging:
+  level:
+    com.verisure.practice: INFO
+    org.springframework.data.mongodb: WARN
+    org.springframework.web: INFO

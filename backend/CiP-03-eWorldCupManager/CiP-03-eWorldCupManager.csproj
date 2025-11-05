@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>CiP_03_eWorldCupManager</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CiP-03-eWorldCupManager.Application\CiP-03-eWorldCupManager.Application.csproj" />
+    <ProjectReference Include="..\CiP-03-eWorldCupManager.Domain\CiP-03-eWorldCupManager.Domain.csproj" />
+    <ProjectReference Include="..\CiP-03-eWorldCupManager.Infrastructure\CiP-03-eWorldCupManager.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

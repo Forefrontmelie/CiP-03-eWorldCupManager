@@ -1,0 +1,6 @@
+@CiP_03_eWorldCupManager_HostAddress = http://localhost:5224
+
+GET {{CiP_03_eWorldCupManager_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

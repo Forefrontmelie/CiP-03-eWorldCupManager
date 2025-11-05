@@ -49,6 +49,7 @@ data/
 .idea/
 *.swp
 *.swo
+.vs/
 
 # OS
 .DS_Store

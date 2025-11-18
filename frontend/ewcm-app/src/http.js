@@ -12,9 +12,15 @@ DELETE	/player/:id	(Bonus)     Ta bort en deltagare ur listan baserat på ID.
  */
 
 
+<<<<<<< HEAD
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:7280/api';
 
 // Fetch all participants
+=======
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+
+
+>>>>>>> db55cb8 (Updated the Frontend.)
 export const fetchParticipants = async () => {
     const url = `${API_BASE_URL}/participants`;
 
@@ -32,7 +38,11 @@ if (!response.ok) {
 };
 
 
+<<<<<<< HEAD
 // Fetch participant by ID
+=======
+
+>>>>>>> db55cb8 (Updated the Frontend.)
 export const fetchParticipantById = async (id) => {
     const url = `${API_BASE_URL}/participants/${id}`;
 
@@ -49,7 +59,11 @@ if (!response.ok) {
     return { data };
 };
 
+<<<<<<< HEAD
 // Delete participant by ID
+=======
+
+>>>>>>> db55cb8 (Updated the Frontend.)
 export const deleteParticipantById = async (id) => {
     const url = `${API_BASE_URL}/participants/${id}`;
 
@@ -65,7 +79,10 @@ if (!response.ok) {
     return { data };
 };
 
+<<<<<<< HEAD
 // Add a new participant (string name)
+=======
+>>>>>>> db55cb8 (Updated the Frontend.)
 export const addParticipant = async (name) => {
     const url = `${API_BASE_URL}/participants`;
     const response = await fetch(url, {

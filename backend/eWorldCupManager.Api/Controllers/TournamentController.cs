@@ -12,46 +12,46 @@ public class TournamentController(ITournamentService tournament, IParticipantRep
 {
 
     //GET		/rounds/:d				Returnerar alla matcher i runda d (1 ≤ d ≤ n−1).
-    [HttpGet("/rounds/{d}")]
-    public RoundDTO GetMatchesInRound(int d)
+    [HttpGet("/rounds/{roundNbr}")]
+    public RoundDTO GetMatchesInRound(int roundNbr)
     {
-        return tournament.GetPairsForSpecificRound(d);
+        return tournament.GetPairsForSpecificRound(roundNbr);
     }
 
 
     //GET		/rounds/max?n=			Returnerar max antal rundor för n deltagare (n−1).
     [HttpGet("/rounds/max")]
-    public int GetMaxRounds( int n)
+    public int GetMaxRounds(int n)
     {
         return tournament.GetMaxNumberOfRounds(n);
     }
 
     //GET		/match/remaining?n=&D=	Returnerar antal återstående unika par efter att D rundor har spelats.
     [HttpGet("/match/remaining")]
-    public int GetRemainingUniquePairs(int d)
+    public int GetRemainingUniquePairs(int roundNbr)
     {
-        return tournament.GetRemainingUniquePairs(d);
+        return tournament.GetRemainingUniquePairs(roundNbr);
     }
 
     //GET		/match?n=&i=&d=			Returnerar direkt vem spelare i möter i runda d (0-baserat index).
     [HttpGet("/match")]
-    public int GetOpponentIndex(int i,  int d)
+    public int GetOpponentIndex(int id,  int roundNbr)
     {
-        return tournament.GetOpponentIndex(i, d);
+        return tournament.GetOpponentIndex(id, roundNbr);
     }
 
     //GET		/player/:i/schedule		Returnerar hela schemat för spelare i över rundor 1..n−1.
-    [HttpGet("/player/{i}/schedule")]
-    public PlayerScheduleDTO GetPlayerSchedule(int i)
+    [HttpGet("/player/{id}/schedule")]
+    public PlayerScheduleDTO GetPlayerSchedule(int id)
     {
-        return tournament.GetPlayerSchedule(i);
+        return tournament.GetPlayerSchedule(id);
     }
 
     //GET		/player/:i/round/:d		Alias till “direktfråga” för spelare i i runda d, men med namn/objekt.
-    [HttpGet("/player/{i}/round/{d}")]
-    public Participant GetPlayerOpponentInRound(int i,  int d)
+    [HttpGet("/player/{id}/round/{roundNbr}")]
+    public Participant GetPlayerOpponentInRound(int id,  int roundNbr)
     {
-        return tournament.GetOpponentParticipant(i, d);
+        return tournament.GetOpponentParticipant(id, roundNbr);
     }
 
 

@@ -56,7 +56,7 @@ public class TournamentController(ITournamentService tournament, IParticipantRep
 
 
     //GET		/participants/				Returnerar alla participants.
-    [HttpGet("/participants/")]
+    [HttpGet("/participants")]
     public IList<Participant> GetAllParticipants()              // TODO: -------------------------------- SKAPA ParticipantDTO! ---------------------------------------
     {
         return participant.GetAllParticipants();

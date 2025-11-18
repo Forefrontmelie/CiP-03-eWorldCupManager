@@ -11,10 +11,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add CORS configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder => builder
+            .WithOrigins(
+                "http://localhost:3000",  // React dev server
+                "https://localhost:3001"  // In case React runs on HTTPS
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
+
+
 builder.Services.AddScoped<ITournamentService, TournamentService>();
-
 builder.Services.AddSingleton<IParticipantRepository, ParticipantRepository>();
-
 builder.Services.AddSingleton<IPairingStrategy, RoundRobinPairingStrategy>();
 
 
@@ -27,10 +41,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Enable CORS
+app.UseCors("AllowReactApp");
+
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
